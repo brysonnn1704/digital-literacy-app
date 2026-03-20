@@ -30,15 +30,7 @@ app.post("/login", (req, res) => {
   );
 });
 
-/* LESSONS */
-app.get("/lessons", (req, res) => {
-  db.query("SELECT * FROM lessons", (err, result) => {
-    if (err) return res.send(err);
-    res.send(result);
-  });
-});
-
-/* SAVE PROGRESS + MISTAKES */
+/* PROGRESS */
 app.post("/progress", (req, res) => {
   const { user_id, lesson_id, score = 0, mistake_type } = req.body;
 
@@ -83,7 +75,83 @@ app.get("/progress/:userId", (req, res) => {
   );
 });
 
-/* ✅ FIXED CERTIFICATE SAVE */
+/* 🔥 WORKING SCAM CHECK */
+app.post("/check-url", async (req, res) => {
+
+  const { url } = req.body;
+
+  if (!url) return res.json({ safe: null });
+
+  try {
+
+    const apiKey = "AIzaSyBM4niSaXp_ML6nkU2CXKKaOsFPjUTTPnE";
+
+    const response = await fetch(
+      `https://safebrowsing.googleapis.com/v4/threatMatches:find?key=${apiKey}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          client: {
+            clientId: "digital-literacy-app",
+            clientVersion: "1.0"
+          },
+          threatInfo: {
+            threatTypes: ["MALWARE", "SOCIAL_ENGINEERING"],
+            platformTypes: ["ANY_PLATFORM"],
+            threatEntryTypes: ["URL"],
+            threatEntries: [{ url }]
+          }
+        })
+      }
+    );
+
+    console.log("STATUS:", response.status);
+
+    const data = await response.json();
+    console.log("DATA:", data);
+
+    if (data.matches) {
+      return res.json({
+        safe: false,
+        reason: "Detected as malicious (Google)"
+      });
+    }
+
+    /* FALLBACK */
+    const lower = url.toLowerCase();
+
+    if (
+      lower.includes(".xyz") ||
+      lower.includes("free") ||
+      lower.includes("win") ||
+      lower.includes("verify")
+    ) {
+      return res.json({
+        safe: false,
+        reason: "Suspicious pattern detected"
+      });
+    }
+
+    return res.json({
+      safe: true,
+      reason: "No threats detected"
+    });
+
+  } catch (err) {
+    console.error("ERROR:", err);
+
+    return res.json({
+      safe: false,
+      reason: "Backend error"
+    });
+  }
+
+});
+
+/* CERTIFICATE */
 app.post("/save-certificate", (req, res) => {
   const { user_id, certificate_id, date } = req.body;
 
@@ -100,7 +168,7 @@ app.post("/save-certificate", (req, res) => {
   });
 });
 
-/* VERIFY CERTIFICATE */
+/* VERIFY */
 app.get("/verify/:id", (req, res) => {
   const { id } = req.params;
 
@@ -120,7 +188,7 @@ app.get("/verify/:id", (req, res) => {
     res.json({
       valid: true,
       name: result[0].name,
-      date: result[0].completed_at,
+      date: result[0].completed_at
     });
   });
 });
