@@ -1,0 +1,137 @@
+:root{
+  --bg:#f4f6f9;
+  --card:#ffffff;
+  --text:#111827;
+  --muted:#6b7280;
+  --primary:#2563eb;
+  --accent:#22c55e;
+}
+
+/* DARK THEME */
+body.dark{
+  --bg:#0f172a;
+  --card:#1e293b;
+  --text:#e2e8f0;
+  --muted:#94a3b8;
+  --primary:#3b82f6;
+  --accent:#22c55e;
+}
+
+/* GLOBAL */
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+.container{
+  width:95%;
+  max-width:1100px;
+  margin:20px auto;
+}
+
+/* CARD */
+.card, .lessonCard{
+  background:var(--card);
+  border-radius:14px;
+  padding:20px;
+  margin-bottom:16px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* GRID */
+.lessonGrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:20px;
+}
+
+/* LESSON CARD */
+.lessonCard{
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.lessonCard:hover{
+  transform:translateY(-4px);
+}
+
+/* ICON */
+.lessonIcon{
+  font-size:40px;
+  margin-bottom:10px;
+}
+
+/* TEXT */
+.lessonDesc{
+  color:var(--muted);
+  margin:10px 0;
+  font-size:16px;
+}
+
+/* BADGE */
+.badge{
+  display:inline-block;
+  padding:6px 12px;
+  border-radius:999px;
+  background:#e0f2fe;
+  color:#0369a1;
+  font-size:14px;
+}
+
+/* FOOTER */
+.lessonFooter{
+  margin-top:12px;
+  font-size:18px;
+  font-weight:bold;
+}
+
+.completedText{
+  color:var(--accent);
+}
+
+.openText{
+  color:var(--primary);
+}
+
+/* BIG BUTTONS (elderly friendly) */
+.btn{
+  margin-top:15px;
+  padding:14px 20px;
+  font-size:18px;
+  border-radius:10px;
+  border:none;
+  background:var(--primary);
+  color:white;
+  cursor:pointer;
+  width:100%;
+}
+
+.btn:hover{
+  opacity:0.9;
+}
+
+/* PROGRESS */
+.progressBox{
+  margin-bottom:25px;
+}
+
+.progressBar{
+  height:14px;
+  background:#ddd;
+  border-radius:10px;
+}
+
+.progressFill{
+  height:100%;
+  background:var(--accent);
+  border-radius:10px;
+  transition:0.4s;
+}
+
+/* CERTIFICATE */
+.certificate{
+  text-align:center;
+  padding:40px;
+}
