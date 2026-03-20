@@ -84,7 +84,7 @@ app.post("/check-url", async (req, res) => {
 
   try {
 
-    const apiKey = "AIzaSyBM4niSaXp_ML6nkU2CXKKaOsFPjUTTPnE";
+    const apiKey = "Your api keyy";
 
     const response = await fetch(
       `https://safebrowsing.googleapis.com/v4/threatMatches:find?key=${apiKey}`,
