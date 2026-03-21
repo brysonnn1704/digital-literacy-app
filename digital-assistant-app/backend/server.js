@@ -30,7 +30,7 @@ app.post("/login", (req, res) => {
   );
 });
 
-/* PROGRESS */
+/* SAVE PROGRESS */
 app.post("/progress", (req, res) => {
   const { user_id, lesson_id, score = 0, mistake_type } = req.body;
 
@@ -75,16 +75,18 @@ app.get("/progress/:userId", (req, res) => {
   );
 });
 
-/* 🔥 WORKING SCAM CHECK */
+/* 🔥 SCAM URL CHECK (WORKING VERSION) */
 app.post("/check-url", async (req, res) => {
 
   const { url } = req.body;
 
-  if (!url) return res.json({ safe: null });
+  if (!url) {
+    return res.json({ safe: null });
+  }
 
   try {
 
-    const apiKey = "Your api keyy";
+    const apiKey = "PASTE_YOUR_NEW_API_KEY_HERE";
 
     const response = await fetch(
       `https://safebrowsing.googleapis.com/v4/threatMatches:find?key=${apiKey}`,
@@ -113,6 +115,7 @@ app.post("/check-url", async (req, res) => {
     const data = await response.json();
     console.log("DATA:", data);
 
+    /* GOOGLE DETECTION */
     if (data.matches) {
       return res.json({
         safe: false,
@@ -120,14 +123,17 @@ app.post("/check-url", async (req, res) => {
       });
     }
 
-    /* FALLBACK */
+    /* 🔥 FALLBACK SMART RULES */
     const lower = url.toLowerCase();
 
     if (
       lower.includes(".xyz") ||
+      lower.includes(".ru") ||
       lower.includes("free") ||
       lower.includes("win") ||
-      lower.includes("verify")
+      lower.includes("verify") ||
+      lower.includes("login") ||
+      lower.includes("bank")
     ) {
       return res.json({
         safe: false,
@@ -151,7 +157,7 @@ app.post("/check-url", async (req, res) => {
 
 });
 
-/* CERTIFICATE */
+/* SAVE CERTIFICATE */
 app.post("/save-certificate", (req, res) => {
   const { user_id, certificate_id, date } = req.body;
 
@@ -168,7 +174,7 @@ app.post("/save-certificate", (req, res) => {
   });
 });
 
-/* VERIFY */
+/* VERIFY CERTIFICATE */
 app.get("/verify/:id", (req, res) => {
   const { id } = req.params;
 
@@ -193,6 +199,7 @@ app.get("/verify/:id", (req, res) => {
   });
 });
 
+/* START SERVER */
 app.listen(5000, () => {
   console.log("Server running on port 5000");
 });
