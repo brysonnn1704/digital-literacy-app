@@ -14,44 +14,44 @@ function LessonDetail() {
   /* ═══════ LANGUAGE-SPECIFIC TUTORIAL VIDEOS ═══════ */
   const videos = {
     1: { // UPI Payment
-      EN: "https://www.youtube.com/embed/iI2NaN_QVTI", 
-      HI: "https://www.youtube.com/embed/AwEYwVfIKgg", 
-      MR: "https://www.youtube.com/embed/qj9bvNFJERE"  
+      EN: "https://www.youtube.com/embed/iI2NaN_QVTI",
+      HI: "https://www.youtube.com/embed/AwEYwVfIKgg",
+      MR: "https://www.youtube.com/embed/qj9bvNFJERE"
     },
     2: { // Scam Calls & SMS
-      EN: "https://drive.google.com/file/d/1c0OTBSZkD2kvXVFbgYKb1QNwCae8y31k/view?usp=sharing", 
-      HI: "https://drive.google.com/file/d/1c0OTBSZkD2kvXVFbgYKb1QNwCae8y31k/view?usp=sharing", 
-      MR: "https://drive.google.com/file/d/1c0OTBSZkD2kvXVFbgYKb1QNwCae8y31k/view?usp=sharing"  
+      EN: "https://www.youtube.com/embed/RUcwxP0yvfw",
+      HI: "https://www.youtube.com/embed/aO858HyFbKI",
+      MR: "https://www.youtube.com/embed/LVV_93mBfSU"
     },
     3: { // Fake Websites
-      EN: "https://www.youtube.com/embed/aO858HyFbKI", 
-      HI: "https://www.youtube.com/embed/RUcwxP0yvfw", 
-      MR: "https://www.youtube.com/embed/iI2NaN_QVTI"  
+      EN: "https://www.youtube.com/embed/aO858HyFbKI",
+      HI: "https://www.youtube.com/embed/RUcwxP0yvfw",
+      MR: "https://www.youtube.com/embed/iI2NaN_QVTI"
     },
     4: { // WhatsApp Basics
-      EN: "https://youtu.be/doigXQKY6Cs", 
-      HI: "https://youtu.be/doigXQKY6Cs", 
-      MR: "https://youtu.be/doigXQKY6Cs"  
+      EN: "https://www.youtube.com/embed/LVV_93mBfSU",
+      HI: "https://www.youtube.com/embed/AwEYwVfIKgg",
+      MR: "https://www.youtube.com/embed/qj9bvNFJERE"
     },
     5: { // Google Search
-      EN: "https://www.youtube.com/watch?v=CT8__DOYLW0", 
-      HI: "https://www.youtube.com/watch?v=CT8__DOYLW0", 
-      MR: "https://www.youtube.com/watch?v=CT8__DOYLW0"  
+      EN: "https://www.youtube.com/embed/iI2NaN_QVTI",
+      HI: "https://www.youtube.com/embed/aO858HyFbKI",
+      MR: "https://www.youtube.com/embed/RUcwxP0yvfw"
     },
     6: { // Phone Settings
-      EN: "https://www.youtube.com/embed/AwEYwVfIKgg", 
-      HI: "https://www.youtube.com/embed/qj9bvNFJERE", 
-      MR: "https://www.youtube.com/embed/LVV_93mBfSU"  
+      EN: "https://www.youtube.com/embed/AwEYwVfIKgg",
+      HI: "https://www.youtube.com/embed/qj9bvNFJERE",
+      MR: "https://www.youtube.com/embed/LVV_93mBfSU"
     },
     7: { // Online Forms
-      EN: "https://www.youtube.com/embed/RUcwxP0yvfw", 
-      HI: "https://www.youtube.com/embed/iI2NaN_QVTI", 
-      MR: "https://www.youtube.com/embed/aO858HyFbKI"  
+      EN: "https://www.youtube.com/embed/RUcwxP0yvfw",
+      HI: "https://www.youtube.com/embed/iI2NaN_QVTI",
+      MR: "https://www.youtube.com/embed/aO858HyFbKI"
     },
     8: { // Email Basics
-      EN: "https://drive.google.com/file/d/179gikLyvmrjZNJUMyVVDUcz5BoNAbMHQ/view?usp=sharing", 
-      HI: "https://drive.google.com/file/d/179gikLyvmrjZNJUMyVVDUcz5BoNAbMHQ/view?usp=sharing", 
-      MR: "https://drive.google.com/file/d/179gikLyvmrjZNJUMyVVDUcz5BoNAbMHQ/view?usp=sharing"  
+      EN: "https://www.youtube.com/embed/aO858HyFbKI",
+      HI: "https://www.youtube.com/embed/LVV_93mBfSU",
+      MR: "https://www.youtube.com/embed/AwEYwVfIKgg"
     }
   };
 
@@ -231,11 +231,11 @@ function LessonDetail() {
   if (!videos[lessonId]) {
     return (
       <div className="container">
-        <div className="card" style={{textAlign:"center",padding:"60px 30px"}}>
-          <div style={{fontSize:"64px",marginBottom:"16px"}}>🔍</div>
+        <div className="card" style={{ textAlign: "center", padding: "60px 30px" }}>
+          <div style={{ fontSize: "64px", marginBottom: "16px" }}>🔍</div>
           <h2>{t(lang, "lessonNotFound")}</h2>
-          <p style={{color:"var(--muted)",marginBottom:"16px"}}>{lang === "HI" ? "यह पाठ मौजूद नहीं है।" : lang === "MR" ? "हा धडा अस्तित्वात नाही." : "The lesson you're looking for doesn't exist."}</p>
-          <button className="btn" style={{maxWidth:"200px",margin:"0 auto"}} onClick={() => navigate("/lessons")}>← {t(lang, "goBack")}</button>
+          <p style={{ color: "var(--muted)", marginBottom: "16px" }}>{lang === "HI" ? "यह पाठ मौजूद नहीं है।" : lang === "MR" ? "हा धडा अस्तित्वात नाही." : "The lesson you're looking for doesn't exist."}</p>
+          <button className="btn" style={{ maxWidth: "200px", margin: "0 auto" }} onClick={() => navigate("/lessons")}>← {t(lang, "goBack")}</button>
         </div>
       </div>
     );
@@ -274,30 +274,30 @@ function LessonDetail() {
   return (
     <div className="container">
       {/* Header */}
-      <div style={{display:"flex",alignItems:"center",gap:"14px",marginBottom:"24px"}}>
-        <button onClick={() => navigate("/lessons")} style={{background:"none",border:"none",fontSize:"20px",cursor:"pointer",color:"var(--primary)",fontWeight:"700",padding:"8px"}}>←</button>
-        <div style={{width:"54px",height:"54px",borderRadius:"16px",background:`${colors[lessonId]}15`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:"28px"}}>{icons[lessonId]}</div>
-        <div style={{flex:1}}>
-          <h2 style={{marginBottom:"2px",fontSize:"1.4rem"}}>{t(lang, titleKeys[lessonId])}</h2>
-          <p style={{color:"var(--muted)",fontSize:"0.85rem"}}>{t(lang, "startLesson")} {lessonId} {t(lang, "lessonOf")} 8</p>
+      <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "24px" }}>
+        <button onClick={() => navigate("/lessons")} style={{ background: "none", border: "none", fontSize: "20px", cursor: "pointer", color: "var(--primary)", fontWeight: "700", padding: "8px" }}>←</button>
+        <div style={{ width: "54px", height: "54px", borderRadius: "16px", background: `${colors[lessonId]}15`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "28px" }}>{icons[lessonId]}</div>
+        <div style={{ flex: 1 }}>
+          <h2 style={{ marginBottom: "2px", fontSize: "1.4rem" }}>{t(lang, titleKeys[lessonId])}</h2>
+          <p style={{ color: "var(--muted)", fontSize: "0.85rem" }}>{t(lang, "startLesson")} {lessonId} {t(lang, "lessonOf")} 8</p>
         </div>
       </div>
 
       {/* Language Badge */}
-      <div style={{marginBottom:"16px",display:"flex",alignItems:"center",gap:"10px"}}>
-        <span style={{display:"inline-flex",alignItems:"center",gap:"6px",padding:"6px 16px",borderRadius:"999px",background:"linear-gradient(135deg, rgba(99,102,241,0.12), rgba(99,102,241,0.06))",color:"var(--primary)",fontSize:"13px",fontWeight:"600",border:"1px solid rgba(99,102,241,0.15)"}}>
+      <div style={{ marginBottom: "16px", display: "flex", alignItems: "center", gap: "10px" }}>
+        <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "6px 16px", borderRadius: "999px", background: "linear-gradient(135deg, rgba(99,102,241,0.12), rgba(99,102,241,0.06))", color: "var(--primary)", fontSize: "13px", fontWeight: "600", border: "1px solid rgba(99,102,241,0.15)" }}>
           🌐 {langLabel}
         </span>
       </div>
 
       {/* Video Player */}
-      <div style={{background:"var(--card)",border:"1px solid var(--card-border)",borderRadius:"20px",overflow:"hidden",boxShadow:"0 8px 32px rgba(0,0,0,0.08)",marginBottom:"20px"}}>
+      <div style={{ background: "var(--card)", border: "1px solid var(--card-border)", borderRadius: "20px", overflow: "hidden", boxShadow: "0 8px 32px rgba(0,0,0,0.08)", marginBottom: "20px" }}>
         <iframe
           width="100%"
           height="400"
           src={videoUrl}
           title="Lesson Video"
-          style={{border:"none",display:"block"}}
+          style={{ border: "none", display: "block" }}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           referrerPolicy="strict-origin-when-cross-origin"
           allowFullScreen
@@ -305,28 +305,28 @@ function LessonDetail() {
       </div>
 
       {/* Step-by-Step Guidance */}
-      <div style={{background:"var(--card)",border:"1px solid var(--card-border)",borderRadius:"20px",padding:"24px",marginBottom:"20px",boxShadow:"0 4px 20px rgba(0,0,0,0.05)"}}>
-        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"20px"}}>
-          <h3 style={{fontSize:"1.2rem",margin:0,display:"flex",alignItems:"center",gap:"10px",color:"var(--text)"}}>
+      <div style={{ background: "var(--card)", border: "1px solid var(--card-border)", borderRadius: "20px", padding: "24px", marginBottom: "20px", boxShadow: "0 4px 20px rgba(0,0,0,0.05)" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
+          <h3 style={{ fontSize: "1.2rem", margin: 0, display: "flex", alignItems: "center", gap: "10px", color: "var(--text)" }}>
             <span>📝</span>
             {lang === "HI" ? "चरण-दर-चरण मार्गदर्शन" : lang === "MR" ? "चरण-दर-चरण मार्गदर्शन" : "Step-by-Step Guidance"}
           </h3>
-          <button onClick={() => speak(stepsData[lessonId]?.[lang]?.map(s => `${s.title}. ${s.desc}`).join(". ") || "", lang, true)} style={{background:"linear-gradient(135deg, var(--accent), var(--accent-light))",border:"none",borderRadius:"50%",width:"40px",height:"40px",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"18px",cursor:"pointer",boxShadow:"0 4px 10px rgba(16,185,129,0.3)",color:"white"}} title="Read all steps">
+          <button onClick={() => speak(stepsData[lessonId]?.[lang]?.map(s => `${s.title}. ${s.desc}`).join(". ") || "", lang, true)} style={{ background: "linear-gradient(135deg, var(--accent), var(--accent-light))", border: "none", borderRadius: "50%", width: "40px", height: "40px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "18px", cursor: "pointer", boxShadow: "0 4px 10px rgba(16,185,129,0.3)", color: "white" }} title="Read all steps">
             🔊
           </button>
         </div>
-        
-        <div style={{display:"flex",flexDirection:"column",gap:"12px"}}>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
           {stepsData[lessonId]?.[lang]?.map((step, idx) => (
-            <div key={idx} style={{display:"flex",alignItems:"flex-start",gap:"16px",background:"var(--surface-glass)",padding:"16px",borderRadius:"14px",border:"1px solid var(--border)"}}>
-              <div style={{background:"var(--background)",width:"40px",height:"40px",borderRadius:"12px",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"20px",flexShrink:0,border:"1px solid var(--border)"}}>
+            <div key={idx} style={{ display: "flex", alignItems: "flex-start", gap: "16px", background: "var(--surface-glass)", padding: "16px", borderRadius: "14px", border: "1px solid var(--border)" }}>
+              <div style={{ background: "var(--background)", width: "40px", height: "40px", borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "20px", flexShrink: 0, border: "1px solid var(--border)" }}>
                 {step.icon}
               </div>
-              <div style={{flex:1}}>
-                <h4 style={{margin:"0 0 4px 0",fontSize:"1rem",color:"var(--text)"}}>{step.title}</h4>
-                <p style={{margin:0,fontSize:"0.85rem",color:"var(--text-secondary)",lineHeight:"1.5"}}>{step.desc}</p>
+              <div style={{ flex: 1 }}>
+                <h4 style={{ margin: "0 0 4px 0", fontSize: "1rem", color: "var(--text)" }}>{step.title}</h4>
+                <p style={{ margin: 0, fontSize: "0.85rem", color: "var(--text-secondary)", lineHeight: "1.5" }}>{step.desc}</p>
               </div>
-              <button onClick={() => speak(`${step.title}. ${step.desc}`, lang, true)} style={{background:"none",border:"none",fontSize:"20px",cursor:"pointer",color:"var(--muted)",padding:"4px",transition:"all 0.2s"}} title="Listen to this step">
+              <button onClick={() => speak(`${step.title}. ${step.desc}`, lang, true)} style={{ background: "none", border: "none", fontSize: "20px", cursor: "pointer", color: "var(--muted)", padding: "4px", transition: "all 0.2s" }} title="Listen to this step">
                 🔊
               </button>
             </div>
@@ -335,14 +335,14 @@ function LessonDetail() {
       </div>
 
       {/* Action Buttons */}
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:"12px"}}>
-        <button onClick={() => speak(speakText, lang, true)} style={{...btnBase, background:"linear-gradient(135deg, #f59e0b, #d97706)", boxShadow:"0 4px 16px rgba(245,158,11,0.25)"}}>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "12px" }}>
+        <button onClick={() => speak(speakText, lang, true)} style={{ ...btnBase, background: "linear-gradient(135deg, #f59e0b, #d97706)", boxShadow: "0 4px 16px rgba(245,158,11,0.25)" }}>
           🔊 {t(lang, "listen")}
         </button>
-        <button onClick={handleComplete} style={{...btnBase, background:"linear-gradient(135deg, var(--accent), #059669)", boxShadow:"0 4px 16px rgba(16,185,129,0.25)"}}>
+        <button onClick={handleComplete} style={{ ...btnBase, background: "linear-gradient(135deg, var(--accent), #059669)", boxShadow: "0 4px 16px rgba(16,185,129,0.25)" }}>
           ✔ {t(lang, "completeBtn")}
         </button>
-        <button onClick={() => navigate(practiceRoutes[lessonId])} style={{...btnBase, background:"linear-gradient(135deg, var(--primary), var(--primary-dark))", boxShadow:"0 4px 16px rgba(99,102,241,0.25)"}}>
+        <button onClick={() => navigate(practiceRoutes[lessonId])} style={{ ...btnBase, background: "linear-gradient(135deg, var(--primary), var(--primary-dark))", boxShadow: "0 4px 16px rgba(99,102,241,0.25)" }}>
           {t(lang, "practiceBtn")} →
         </button>
       </div>
