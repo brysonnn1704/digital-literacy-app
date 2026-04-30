@@ -19,9 +19,9 @@ function LessonDetail() {
       MR: "https://www.youtube.com/embed/qj9bvNFJERE"  
     },
     2: { // Scam Calls & SMS
-      EN: "https://www.youtube.com/embed/RUcwxP0yvfw", 
-      HI: "https://www.youtube.com/embed/aO858HyFbKI", 
-      MR: "https://www.youtube.com/embed/LVV_93mBfSU"  
+      EN: "https://drive.google.com/file/d/1c0OTBSZkD2kvXVFbgYKb1QNwCae8y31k/view?usp=sharing", 
+      HI: "https://drive.google.com/file/d/1c0OTBSZkD2kvXVFbgYKb1QNwCae8y31k/view?usp=sharing", 
+      MR: "https://drive.google.com/file/d/1c0OTBSZkD2kvXVFbgYKb1QNwCae8y31k/view?usp=sharing"  
     },
     3: { // Fake Websites
       EN: "https://www.youtube.com/embed/aO858HyFbKI", 
@@ -29,14 +29,14 @@ function LessonDetail() {
       MR: "https://www.youtube.com/embed/iI2NaN_QVTI"  
     },
     4: { // WhatsApp Basics
-      EN: "https://www.youtube.com/embed/LVV_93mBfSU", 
-      HI: "https://www.youtube.com/embed/AwEYwVfIKgg", 
-      MR: "https://www.youtube.com/embed/qj9bvNFJERE"  
+      EN: "https://youtu.be/doigXQKY6Cs", 
+      HI: "https://youtu.be/doigXQKY6Cs", 
+      MR: "https://youtu.be/doigXQKY6Cs"  
     },
     5: { // Google Search
-      EN: "https://www.youtube.com/embed/iI2NaN_QVTI", 
-      HI: "https://www.youtube.com/embed/aO858HyFbKI", 
-      MR: "https://www.youtube.com/embed/RUcwxP0yvfw"  
+      EN: "https://www.youtube.com/watch?v=CT8__DOYLW0", 
+      HI: "https://www.youtube.com/watch?v=CT8__DOYLW0", 
+      MR: "https://www.youtube.com/watch?v=CT8__DOYLW0"  
     },
     6: { // Phone Settings
       EN: "https://www.youtube.com/embed/AwEYwVfIKgg", 
@@ -49,9 +49,9 @@ function LessonDetail() {
       MR: "https://www.youtube.com/embed/aO858HyFbKI"  
     },
     8: { // Email Basics
-      EN: "https://www.youtube.com/embed/aO858HyFbKI", 
-      HI: "https://www.youtube.com/embed/LVV_93mBfSU", 
-      MR: "https://www.youtube.com/embed/AwEYwVfIKgg"  
+      EN: "https://drive.google.com/file/d/179gikLyvmrjZNJUMyVVDUcz5BoNAbMHQ/view?usp=sharing", 
+      HI: "https://drive.google.com/file/d/179gikLyvmrjZNJUMyVVDUcz5BoNAbMHQ/view?usp=sharing", 
+      MR: "https://drive.google.com/file/d/179gikLyvmrjZNJUMyVVDUcz5BoNAbMHQ/view?usp=sharing"  
     }
   };
 
