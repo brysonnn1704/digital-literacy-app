@@ -35,8 +35,8 @@ DigiSaathi is an accessible, multi-language digital literacy platform designed t
 | Layer | Technology |
 |---|---|
 | **Frontend** | React 19, React Router v7, React Icons |
-| **Backend** | Node.js, Express 5 |
-| **Database** | MongoDB (Mongoose ODM) |
+| **Backend** | Node.js, Express 5, Dotenv |
+| **Database** | Free SQLite (default, zero setup) with optional MongoDB Atlas support |
 | **APIs** | Google Safe Browsing API |
 | **Deployment** | Vercel |
 
@@ -45,7 +45,7 @@ DigiSaathi is an accessible, multi-language digital literacy platform designed t
 ## 📁 Project Structure
 
 ```
-SEB_Digisaathi_AmosNunes_10683/
+Digisaathi_platform/
 ├── frontend/                  # React application
 │   ├── public/                # Static assets
 │   └── src/
@@ -54,8 +54,8 @@ SEB_Digisaathi_AmosNunes_10683/
 │       ├── services/          # API service layer
 │       └── utils/             # Utility functions
 ├── backend/                   # Express API server
-│   ├── models/                # Mongoose schemas (User, UserProgress)
-│   ├── db.js                  # MongoDB connection
+│   ├── models/                # Database models (User, UserProgress)
+│   ├── db.js                  # Database connection adapter (SQLite & MongoDB)
 │   └── server.js              # API routes & server entry point
 └── vercel.json                # Deployment configuration
 ```
@@ -66,16 +66,15 @@ SEB_Digisaathi_AmosNunes_10683/
 
 ### Prerequisites
 
-- **Node.js** (v18 or higher)
-- **MongoDB** (local instance or MongoDB Atlas)
+- **Node.js** (v18 or higher; v22+ recommended for built-in SQLite)
 - **npm** or **yarn**
 
 ### Installation
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/SEB_Digisaathi_AmosNunes_10683.git
-   cd SEB_Digisaathi_AmosNunes_10683
+   git clone https://github.com/brysonnn1704/digital-literacy-app.git
+   cd digital-literacy-app
    ```
 
 2. **Install backend dependencies**
@@ -87,11 +86,16 @@ SEB_Digisaathi_AmosNunes_10683/
 3. **Install frontend dependencies**
    ```bash
    cd ../frontend
-   npm install
+   npm install --legacy-peer-deps
    ```
 
-4. **Configure MongoDB**
-   - Update the connection string in `backend/db.js` with your MongoDB URI.
+4. **Database Configuration**
+   - **No setup required!** The backend automatically runs an embedded free SQLite database (`backend/data/digisaathi.sqlite`) without requiring MongoDB installations, cloud tiers, or connection limits.
+   - *(Optional)* If you wish to use a custom MongoDB Atlas cluster, create a `backend/.env` file:
+     ```env
+     PORT=5005
+     MONGO_URI=mongodb+srv://<username>:<password>@cluster0.example.mongodb.net/digital_assistant?retryWrites=true&w=majority
+     ```
 
 ### Running Locally
 
@@ -125,9 +129,10 @@ SEB_Digisaathi_AmosNunes_10683/
 
 ---
 
-## 👤 Author
+## 👥 Authors & Credits
 
-**Amos Nunes** — _10683_
+- **Bryson Almeida** ([@brysonnn1704](https://github.com/brysonnn1704))
+- **Amos Nunes** ([@amosnunes01](https://github.com/amosnunes01))
 
 ---
 
