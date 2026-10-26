@@ -11,6 +11,16 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Support both /api/* (Vercel rewrite) and direct /* routes
+app.use((req, res, next) => {
+  if (req.url.startsWith('/api/')) {
+    req.url = req.url.slice(4);
+  } else if (req.url === '/api') {
+    req.url = '/';
+  }
+  next();
+});
+
 /* CONNECT TO DATABASE */
 connectDB();
 
@@ -239,6 +249,10 @@ app.get("/verify/:id", async (req, res) => {
 
 /* ──────────────── START SERVER ──────────────── */
 const PORT = process.env.PORT || 5005;
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-});
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log("🚀 Server running on port " + PORT);
+  });
+}
+
+module.exports = app;

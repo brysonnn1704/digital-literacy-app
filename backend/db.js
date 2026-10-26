@@ -27,14 +27,31 @@ function initTables(db) {
       UNIQUE(user_id, lesson_id)
     );
   `);
+
+  // Seed default demo user if not present
+  try {
+    const demoCheck = db.prepare("SELECT id FROM users WHERE email = ?").get("demo@digisaathi.com");
+    if (!demoCheck) {
+      db.prepare("INSERT INTO users (id, name, email, password, createdAt) VALUES (?, ?, ?, ?, ?)").run(
+        "usr_demo",
+        "DigiSaathi Student",
+        "demo@digisaathi.com",
+        "password123",
+        new Date().toISOString()
+      );
+    }
+  } catch (e) {}
 }
 
 function getDatabase() {
   if (dbAdapter) return dbAdapter;
 
-  const dataDir = path.join(__dirname, "data");
+  // On Vercel serverless functions, only /tmp is writable
+  const dataDir = process.env.VERCEL ? "/tmp" : path.join(__dirname, "data");
   if (!fs.existsSync(dataDir)) {
-    fs.mkdirSync(dataDir, { recursive: true });
+    try {
+      fs.mkdirSync(dataDir, { recursive: true });
+    } catch (e) {}
   }
 
   // 1. Try Node.js built-in SQLite (Node 22+, completely free & local)
@@ -56,7 +73,20 @@ function getDatabase() {
   // 2. Persistent JSON Database fallback for any Node version
   const jsonPath = path.join(dataDir, "database.json");
   if (!fs.existsSync(jsonPath)) {
-    fs.writeFileSync(jsonPath, JSON.stringify({ users: [], progress: [] }, null, 2), "utf8");
+    try {
+      fs.writeFileSync(jsonPath, JSON.stringify({
+        users: [
+          {
+            id: "usr_demo",
+            name: "DigiSaathi Student",
+            email: "demo@digisaathi.com",
+            password: "password123",
+            createdAt: new Date().toISOString()
+          }
+        ],
+        progress: []
+      }, null, 2), "utf8");
+    } catch (e) {}
   }
 
   dbAdapter = {
@@ -70,7 +100,9 @@ function getDatabase() {
       }
     },
     write(data) {
-      fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2), "utf8");
+      try {
+        fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2), "utf8");
+      } catch (e) {}
     }
   };
 
