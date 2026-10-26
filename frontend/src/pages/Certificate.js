@@ -11,7 +11,7 @@ function Certificate({ language }) {
     setDate(today);
     const id = "CERT-" + Math.floor(Math.random() * 1000000);
     setCertId(id);
-    fetch(`${process.env.REACT_APP_API_URL || "http://localhost:5005"}/save-certificate`, {
+    fetch(`${process.env.REACT_APP_API_URL || (typeof window !== "undefined" && window.location && window.location.hostname !== "localhost" ? "/api" : "http://localhost:5005")}/save-certificate`, {
       method:"POST", headers:{"Content-Type":"application/json"},
       body:JSON.stringify({user_id:user.id,certificate_id:id,date:today})
     });

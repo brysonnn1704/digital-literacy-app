@@ -12,7 +12,7 @@ function ScamAnalyzer({ language }) {
     if (!text) { setResult("Enter a website URL"); setResultType("warning"); return; }
     setLoading(true); setResult("Checking..."); setResultType("");
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL || "http://localhost:5005"}/check-url`, {
+      const res = await fetch(`${process.env.REACT_APP_API_URL || (typeof window !== "undefined" && window.location && window.location.hostname !== "localhost" ? "/api" : "http://localhost:5005")}/check-url`, {
         method:"POST", headers:{"Content-Type":"application/json"},
         body:JSON.stringify({url:text})
       });
@@ -20,7 +20,7 @@ function ScamAnalyzer({ language }) {
       if (data.safe === false) {
         setResult("⚠ " + data.reason); setResultType("danger");
         if (user?.id) {
-          await fetch(`${process.env.REACT_APP_API_URL || "http://localhost:5005"}/progress`, {
+          await fetch(`${process.env.REACT_APP_API_URL || (typeof window !== "undefined" && window.location && window.location.hostname !== "localhost" ? "/api" : "http://localhost:5005")}/progress`, {
             method:"POST", headers:{"Content-Type":"application/json"},
             body:JSON.stringify({user_id:user.id,lesson_id:2,mistake_type:"scam"})
           });

@@ -13,7 +13,7 @@ function Dashboard({ language }) {
       navigate("/login");
       return;
     }
-    fetch(`${process.env.REACT_APP_API_URL || "http://localhost:5005"}/progress/${user.id}`)
+    fetch(`${process.env.REACT_APP_API_URL || (typeof window !== "undefined" && window.location && window.location.hostname !== "localhost" ? "/api" : "http://localhost:5005")}/progress/${user.id}`)
       .then(res => res.json())
       .then(rows => {
         const completed = rows.filter(r => r.completed === 1);

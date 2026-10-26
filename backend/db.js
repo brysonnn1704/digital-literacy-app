@@ -1,8 +1,26 @@
 const path = require("path");
 const fs = require("fs");
+const { fetchRemoteData, saveRemoteData } = require("./blobStore");
 require("dotenv").config();
 
 let dbAdapter = null;
+
+const DEFAULT_USERS = [
+  {
+    id: "usr_demo",
+    name: "DigiSaathi Student",
+    email: "demo@digisaathi.com",
+    password: "password123",
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "usr_bryson",
+    name: "Bryson Almeida",
+    email: "bryson@gmail.com",
+    password: "password123",
+    createdAt: new Date().toISOString()
+  }
+];
 
 function initTables(db) {
   db.exec(`
@@ -28,17 +46,19 @@ function initTables(db) {
     );
   `);
 
-  // Seed default demo user if not present
+  // Seed default demo users if not present
   try {
-    const demoCheck = db.prepare("SELECT id FROM users WHERE email = ?").get("demo@digisaathi.com");
-    if (!demoCheck) {
-      db.prepare("INSERT INTO users (id, name, email, password, createdAt) VALUES (?, ?, ?, ?, ?)").run(
-        "usr_demo",
-        "DigiSaathi Student",
-        "demo@digisaathi.com",
-        "password123",
-        new Date().toISOString()
-      );
+    for (const u of DEFAULT_USERS) {
+      const exists = db.prepare("SELECT id FROM users WHERE email = ?").get(u.email);
+      if (!exists) {
+        db.prepare("INSERT INTO users (id, name, email, password, createdAt) VALUES (?, ?, ?, ?, ?)").run(
+          u.id,
+          u.name,
+          u.email,
+          u.password,
+          u.createdAt
+        );
+      }
     }
   } catch (e) {}
 }
@@ -46,7 +66,6 @@ function initTables(db) {
 function getDatabase() {
   if (dbAdapter) return dbAdapter;
 
-  // On Vercel serverless functions, only /tmp is writable
   const dataDir = process.env.VERCEL ? "/tmp" : path.join(__dirname, "data");
   if (!fs.existsSync(dataDir)) {
     try {
@@ -63,7 +82,8 @@ function getDatabase() {
     console.log(`✅ Using Free SQLite Database at: ${dbPath}`);
     dbAdapter = {
       type: "sqlite",
-      db
+      db,
+      dataDir
     };
     return dbAdapter;
   } catch (err) {
@@ -75,15 +95,7 @@ function getDatabase() {
   if (!fs.existsSync(jsonPath)) {
     try {
       fs.writeFileSync(jsonPath, JSON.stringify({
-        users: [
-          {
-            id: "usr_demo",
-            name: "DigiSaathi Student",
-            email: "demo@digisaathi.com",
-            password: "password123",
-            createdAt: new Date().toISOString()
-          }
-        ],
+        users: DEFAULT_USERS,
         progress: []
       }, null, 2), "utf8");
     } catch (e) {}
@@ -96,7 +108,7 @@ function getDatabase() {
       try {
         return JSON.parse(fs.readFileSync(jsonPath, "utf8"));
       } catch (e) {
-        return { users: [], progress: [] };
+        return { users: [...DEFAULT_USERS], progress: [] };
       }
     },
     write(data) {
@@ -111,7 +123,6 @@ function getDatabase() {
 }
 
 const connectDB = async () => {
-  // Check if user specifically configured a MongoDB URI in .env
   if (process.env.MONGO_URI) {
     try {
       const mongoose = require("mongoose");
@@ -128,3 +139,4 @@ const connectDB = async () => {
 
 module.exports = connectDB;
 module.exports.getDatabase = getDatabase;
+module.exports.DEFAULT_USERS = DEFAULT_USERS;

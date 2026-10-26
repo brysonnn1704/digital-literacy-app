@@ -14,7 +14,7 @@ function Register(){
     if(!name || !email || !password){ alert("Fill all fields"); return; }
     setLoading(true);
     try{
-      const response = await fetch(`${process.env.REACT_APP_API_URL || "http://localhost:5005"}/register`,{
+      const response = await fetch(`${process.env.REACT_APP_API_URL || (typeof window !== "undefined" && window.location && window.location.hostname !== "localhost" ? "/api" : "http://localhost:5005")}/register`,{
         method:"POST", headers:{"Content-Type":"application/json"},
         body:JSON.stringify({name,email,password})
       });

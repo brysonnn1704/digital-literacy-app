@@ -6,7 +6,7 @@ function Verify() {
   const id = params.get("id");
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL || "http://localhost:5005"}/verify/${id}`)
+    fetch(`${process.env.REACT_APP_API_URL || (typeof window !== "undefined" && window.location && window.location.hostname !== "localhost" ? "/api" : "http://localhost:5005")}/verify/${id}`)
       .then(res => res.json())
       .then(setData);
   }, [id]);

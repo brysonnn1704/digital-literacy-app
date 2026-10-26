@@ -1,4 +1,4 @@
-const API_URL = (process.env.REACT_APP_API_URL || "http://localhost:5005");
+const API_URL = (process.env.REACT_APP_API_URL || (typeof window !== "undefined" && window.location && window.location.hostname !== "localhost" ? "/api" : "http://localhost:5005"));
 
 export const getLessons = async () => {
   const res = await fetch(`${API_URL}/lessons`);

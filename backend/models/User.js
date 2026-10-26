@@ -1,4 +1,5 @@
-const { getDatabase } = require("../db");
+const { getDatabase, DEFAULT_USERS } = require("../db");
+const { fetchRemoteData, saveRemoteData } = require("../blobStore");
 
 // Fallback / standard Mongoose model if MONGO_URI is active
 let mongooseModel = null;
@@ -24,6 +25,20 @@ function formatUser(row) {
   };
 }
 
+async function syncAllUsersAndProgress(adapter) {
+  let allUsers = [];
+  let allProgress = [];
+  if (adapter.type === "sqlite") {
+    allUsers = adapter.db.prepare("SELECT * FROM users").all();
+    allProgress = adapter.db.prepare("SELECT * FROM user_progress").all();
+  } else {
+    const data = adapter.read();
+    allUsers = data.users || [];
+    allProgress = data.progress || [];
+  }
+  await saveRemoteData({ users: allUsers, progress: allProgress });
+}
+
 const User = {
   async findOne(query) {
     if (mongooseModel && mongooseModel.db && mongooseModel.db.readyState === 1) {
@@ -32,38 +47,66 @@ const User = {
 
     const adapter = getDatabase();
 
-    if (adapter.type === "sqlite") {
-      const { db } = adapter;
+    const searchLocal = () => {
+      if (adapter.type === "sqlite") {
+        const { db } = adapter;
+        if (query.email && query.password) {
+          const stmt = db.prepare("SELECT * FROM users WHERE LOWER(email) = LOWER(?) AND password = ?");
+          return stmt.get(query.email.trim(), query.password);
+        }
+        if (query.email) {
+          const stmt = db.prepare("SELECT * FROM users WHERE LOWER(email) = LOWER(?)");
+          return stmt.get(query.email.trim());
+        }
+        if (query.id || query._id) {
+          const id = query.id || query._id;
+          const stmt = db.prepare("SELECT * FROM users WHERE id = ?");
+          return stmt.get(String(id));
+        }
+        return null;
+      }
+
+      // JSON fallback
+      const data = adapter.read();
       if (query.email && query.password) {
-        const stmt = db.prepare("SELECT * FROM users WHERE LOWER(email) = LOWER(?) AND password = ?");
-        const row = stmt.get(query.email.trim(), query.password);
-        return formatUser(row);
-      }
-      if (query.email) {
-        const stmt = db.prepare("SELECT * FROM users WHERE LOWER(email) = LOWER(?)");
-        const row = stmt.get(query.email.trim());
-        return formatUser(row);
-      }
-      if (query.id || query._id) {
+        return data.users.find(u => u.email.toLowerCase() === query.email.trim().toLowerCase() && u.password === query.password);
+      } else if (query.email) {
+        return data.users.find(u => u.email.toLowerCase() === query.email.trim().toLowerCase());
+      } else if (query.id || query._id) {
         const id = query.id || query._id;
-        const stmt = db.prepare("SELECT * FROM users WHERE id = ?");
-        const row = stmt.get(String(id));
-        return formatUser(row);
+        return data.users.find(u => String(u.id) === String(id));
       }
       return null;
+    };
+
+    let user = searchLocal();
+
+    // If not found locally, try fetching latest from remote Blob store
+    if (!user && (process.env.VERCEL || process.env.BLOB_STORE_ID)) {
+      const remote = await fetchRemoteData();
+      if (remote && Array.isArray(remote.users)) {
+        for (const ru of remote.users) {
+          try {
+            if (adapter.type === "sqlite") {
+              const ex = adapter.db.prepare("SELECT id FROM users WHERE id = ?").get(ru.id);
+              if (!ex) {
+                adapter.db.prepare("INSERT INTO users (id, name, email, password, createdAt) VALUES (?, ?, ?, ?, ?)").run(
+                  ru.id, ru.name, ru.email, ru.password, ru.createdAt
+                );
+              }
+            } else {
+              const data = adapter.read();
+              if (!data.users.find(u => u.id === ru.id)) {
+                data.users.push(ru);
+                adapter.write(data);
+              }
+            }
+          } catch (e) {}
+        }
+        user = searchLocal();
+      }
     }
 
-    // JSON fallback
-    const data = adapter.read();
-    let user = null;
-    if (query.email && query.password) {
-      user = data.users.find(u => u.email.toLowerCase() === query.email.trim().toLowerCase() && u.password === query.password);
-    } else if (query.email) {
-      user = data.users.find(u => u.email.toLowerCase() === query.email.trim().toLowerCase());
-    } else if (query.id || query._id) {
-      const id = query.id || query._id;
-      user = data.users.find(u => String(u.id) === String(id));
-    }
     return formatUser(user);
   },
 
@@ -85,15 +128,16 @@ const User = {
       const { db } = adapter;
       const stmt = db.prepare("INSERT INTO users (id, name, email, password, createdAt) VALUES (?, ?, ?, ?, ?)");
       stmt.run(id, name.trim(), cleanEmail, password, createdAt);
-      return formatUser({ id, name: name.trim(), email: cleanEmail, password, createdAt });
+    } else {
+      const data = adapter.read();
+      data.users.push({ id, name: name.trim(), email: cleanEmail, password, createdAt });
+      adapter.write(data);
     }
 
-    // JSON fallback
-    const data = adapter.read();
-    const newUser = { id, name: name.trim(), email: cleanEmail, password, createdAt };
-    data.users.push(newUser);
-    adapter.write(data);
-    return formatUser(newUser);
+    // Sync to remote cloud storage if available
+    syncAllUsersAndProgress(adapter).catch(() => {});
+
+    return formatUser({ id, name: name.trim(), email: cleanEmail, password, createdAt });
   }
 };
 

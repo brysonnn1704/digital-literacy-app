@@ -1,4 +1,5 @@
 const { getDatabase } = require("../db");
+const { fetchRemoteData, saveRemoteData } = require("../blobStore");
 
 // Fallback Mongoose model if custom MONGO_URI is active
 let mongooseModel = null;
@@ -19,6 +20,20 @@ try {
     mongooseModel = mongoose.models.UserProgress || mongoose.model("UserProgress", userProgressSchema);
   }
 } catch (e) {}
+
+async function syncProgressRemotely(adapter) {
+  let allUsers = [];
+  let allProgress = [];
+  if (adapter.type === "sqlite") {
+    allUsers = adapter.db.prepare("SELECT * FROM users").all();
+    allProgress = adapter.db.prepare("SELECT * FROM user_progress").all();
+  } else {
+    const data = adapter.read();
+    allUsers = data.users || [];
+    allProgress = data.progress || [];
+  }
+  await saveRemoteData({ users: allUsers, progress: allProgress });
+}
 
 function makeInstance(row, adapter) {
   if (!row) return null;
@@ -68,6 +83,8 @@ function makeInstance(row, adapter) {
         adapter.write(data);
       }
     }
+
+    syncProgressRemotely(adapter).catch(() => {});
     return instance;
   };
 
@@ -171,14 +188,14 @@ const UserProgress = {
         entry.completed_at
       );
       entry.id = Number(info.lastInsertRowid);
-      return makeInstance(entry, adapter);
+    } else {
+      const dbData = adapter.read();
+      entry.id = Date.now();
+      dbData.progress.push(entry);
+      adapter.write(dbData);
     }
 
-    // JSON fallback
-    const dbData = adapter.read();
-    entry.id = Date.now();
-    dbData.progress.push(entry);
-    adapter.write(dbData);
+    syncProgressRemotely(adapter).catch(() => {});
     return makeInstance(entry, adapter);
   }
 };

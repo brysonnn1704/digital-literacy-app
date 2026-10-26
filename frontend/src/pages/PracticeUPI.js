@@ -26,7 +26,7 @@ function PracticeUPI({ language }) {
 
   const sendMistake = async () => {
     if (!user?.id) return;
-    await fetch(`${process.env.REACT_APP_API_URL || "http://localhost:5005"}/progress`, {
+    await fetch(`${process.env.REACT_APP_API_URL || (typeof window !== "undefined" && window.location && window.location.hostname !== "localhost" ? "/api" : "http://localhost:5005")}/progress`, {
       method: "POST", headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ user_id: user.id, lesson_id: 1, mistake_type: "upi" })
     });
